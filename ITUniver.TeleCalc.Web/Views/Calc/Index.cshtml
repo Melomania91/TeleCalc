@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+@if (ViewBag.ShowOperations)
+{
+<div>
+    @ViewBag.Message
+</div>
+}
+else
+{
+<div>
+    <b>@ViewBag.OperName</b> (@ViewBag.X, @ViewBag.Y) = @ViewBag.Result
+</div>
+}
+
