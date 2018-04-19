@@ -11,12 +11,7 @@ namespace ITUniver.TeleCalc.Core.Operations
         public string Name => "sub";
 
         public double[] Args { set {
-                var sub = value[0];
-                value.Skip(1).ToList().ForEach(v =>
-                {
-                    sub -= v;
-                });
-                Result = sub;
+                Result = value.Aggregate((x, y) => x-y);
             }
         get { return new double[0]; }
                 }

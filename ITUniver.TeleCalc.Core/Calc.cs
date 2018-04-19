@@ -42,6 +42,11 @@ namespace ITUniver.TeleCalc.ConCalc
             return operations;
         }
 
+        public string[] GetOperationsName()
+        {
+            return operations.Select(o => o.Name).ToArray();
+        }
+
         public double Exec(string operName, double x, double y)
         {
             var operation = operations.FirstOrDefault(c => c.Name == operName);

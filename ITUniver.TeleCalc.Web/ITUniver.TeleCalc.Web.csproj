@@ -147,6 +147,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CalcModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -188,10 +189,12 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Calc\Index.cshtml" />
     <Content Include="Views\Calc\Operations.cshtml" />
+    <Content Include="Views\Shared\Ops.cshtml" />
+    <Content Include="Views\Shared\Operation.cshtml" />
+    <Content Include="Views\Calc\Exec.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

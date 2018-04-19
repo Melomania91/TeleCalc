@@ -11,12 +11,7 @@ namespace ITUniver.TeleCalc.Core.Operations
         public string Name => "div";
 
         public double[] Args { set {
-                var div = value[0];
-                value.Skip(1).ToList().ForEach(v =>
-                {
-                    div /= v;
-                });
-                Result = div;
+                Result = value.Aggregate((x, y) => x / y);
             }
         get { return new double[0]; }
                 }

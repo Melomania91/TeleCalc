@@ -11,13 +11,7 @@ namespace ITUniver.TeleCalc.Core.Operations
         public string Name => "sum";
 
         public double[] Args { set {
-                var sum = 0d;
-                value.ToList().ForEach(v => 
-                {                   
-                    sum += v;
-                });
-                
-                Result = sum;
+                Result = value.Aggregate((x, y) => x + y);
             }
         get { return new double[0]; }
                 }

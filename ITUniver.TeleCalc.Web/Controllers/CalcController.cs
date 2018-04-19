@@ -1,4 +1,5 @@
 ﻿using ITUniver.TeleCalc.ConCalc;
+using ITUniver.TeleCalc.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,27 +18,48 @@ namespace ITUniver.TeleCalc.Web.Controllers
             ViewBag.Y = y;
             ViewBag.ShowOperations = false;
             var calc = new Calc();
-            var operations = calc.GetOperations();
+            var operations = calc.GetOperationsName();
 
-            if (!string.IsNullOrEmpty(operName) && operations.Any(o => o.Name == operName))
+            if (!string.IsNullOrEmpty(operName) && operations.Contains(operName))
                 ViewBag.Result = calc.Exec(operName, (double)x, (double)y);
             else
             {
                 ViewBag.ShowOperations = true;
-                ViewBag.Message = string.Format("Доступные операции:\n{0}", string.Join(", ", operations.Select(o => o.Name)));
+                ViewBag.Message = string.Format("Доступные операции:\n{0}", string.Join(", ", operations.Select(o => o)));
             }
                 return View(); 
             
         }
+
         [HttpGet]
         public ActionResult Operations()
         {
             var calc = new Calc();
-            var operations = calc.GetOperations();
-            ViewBag.Message = string.Format("Доступные операции:\n{0}", string.Join(", ", operations.Select(o => o.Name)));
+            var operations = calc.GetOperationsName();
+            ViewBag.Operations = operations;
+            ViewBag.Message = string.Format("Доступные операции:\n{0}", string.Join(", ", operations.Select(o => o)));
+            return View("Ops");
+        }
+
+        [HttpGet]
+        public ActionResult Exec()
+        {
             return View();
         }
 
+        [HttpPost]
+        public ActionResult Exec(CalcModel model, string operationName)
+        {
+            model.OperName = operationName;
+            var calc = new Calc();
+            var operations = calc.GetOperationsName();
 
+            if (!string.IsNullOrEmpty(model.OperName) && operations.Contains(model.OperName))
+                model.Result = calc.Exec(model.OperName, model.X, model.Y);
+
+            return View(model);
+        }
+
+        
     }
 }
