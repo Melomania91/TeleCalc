@@ -196,6 +196,7 @@
     <Content Include="Views\Calc\Exec.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Double.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Double1.cshtml" />
+    <Content Include="Views\Calc\Partial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

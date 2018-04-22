@@ -19,7 +19,7 @@ namespace ITUniver.TeleCalc.Web.Controllers
             ViewBag.ShowOperations = false;
             var calc = new Calc();
             var operations = calc.GetOperationsName();
-
+            
             if (!string.IsNullOrEmpty(operName) && operations.Contains(operName))
                 ViewBag.Result = calc.Exec(operName, (double)x, (double)y);
             else
@@ -43,25 +43,43 @@ namespace ITUniver.TeleCalc.Web.Controllers
 
         [HttpGet]
         public ActionResult Exec()
-        {
+        {            
             var model = new CalcModel();
             var calc = new Calc();
             var operations = calc.GetOperationsName();
             model.OperationList = new SelectList(calc.GetOperationsName());
 
-            return View(model);
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("Partial", model);
+            }
+            else
+            {
+                return View(model);
+            }
+
         }
 
         [HttpPost]
-        public Double Exec(CalcModel model)
+        public ActionResult Exec(CalcModel model)
         {
             var calc = new Calc();
             var operations = calc.GetOperationsName();
             model.OperationList = new SelectList(calc.GetOperationsName());
-            if (!string.IsNullOrEmpty(model.OperName) && operations.Contains(model.OperName))
-                return model.Result = calc.Exec(model.OperName, model.X, model.Y);
 
-            return Double.NaN;
+            if (!string.IsNullOrEmpty(model.OperName) && operations.Contains(model.OperName))
+                model.Result = calc.Exec(model.OperName, model.X, model.Y);
+            else
+                model.Result = Double.NaN;
+
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("Partial", model);
+            }
+            else
+            {
+                return View(model);
+            }
         }
 
         
