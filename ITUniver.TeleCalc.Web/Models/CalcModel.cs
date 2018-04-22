@@ -4,13 +4,17 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace ITUniver.TeleCalc.Web.Models
 {
     public class CalcModel
     {
-        [ReadOnly(true)]
+        [DisplayName("Операция")]
         public string OperName { get; set; }
+
+        [HiddenInput(DisplayValue = false)]
+        public SelectList OperationList { get; set; }
 
         public double X { get; set; }
 
@@ -18,6 +22,7 @@ namespace ITUniver.TeleCalc.Web.Models
         public double Y { get; set; }
 
         [ReadOnly(true)]
+        [DisplayName("Результат")]
         public double Result { get; set; }
     }
 }

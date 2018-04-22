@@ -4,14 +4,8 @@
     string[] list = ViewBag.Operations;
 }
 
+
 <h2>Ops</h2>
 
-<ul>
-    @foreach (string item in list)
-    {
-        <li>
-            @Html.Partial("Operation", item)
-        </li>
-    }
-</ul>
-@Html.DropDownList("Opearions", new SelectList(@list))
+@Helpers.LiList(list)
+

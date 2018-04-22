@@ -44,20 +44,24 @@ namespace ITUniver.TeleCalc.Web.Controllers
         [HttpGet]
         public ActionResult Exec()
         {
-            return View();
+            var model = new CalcModel();
+            var calc = new Calc();
+            var operations = calc.GetOperationsName();
+            model.OperationList = new SelectList(calc.GetOperationsName());
+
+            return View(model);
         }
 
         [HttpPost]
-        public ActionResult Exec(CalcModel model, string operationName)
+        public Double Exec(CalcModel model)
         {
-            model.OperName = operationName;
             var calc = new Calc();
             var operations = calc.GetOperationsName();
-
+            model.OperationList = new SelectList(calc.GetOperationsName());
             if (!string.IsNullOrEmpty(model.OperName) && operations.Contains(model.OperName))
-                model.Result = calc.Exec(model.OperName, model.X, model.Y);
+                return model.Result = calc.Exec(model.OperName, model.X, model.Y);
 
-            return View(model);
+            return Double.NaN;
         }
 
         
