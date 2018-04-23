@@ -61,25 +61,19 @@ namespace ITUniver.TeleCalc.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Exec(CalcModel model)
+        public PartialViewResult Exec(CalcModel model)
         {
             var calc = new Calc();
             var operations = calc.GetOperationsName();
             model.OperationList = new SelectList(calc.GetOperationsName());
 
             if (!string.IsNullOrEmpty(model.OperName) && operations.Contains(model.OperName))
-                model.Result = calc.Exec(model.OperName, model.X, model.Y);
+                model.Result = calc.Exec(model.OperName, model.InputData);
             else
                 model.Result = Double.NaN;
 
-            if (Request.IsAjaxRequest())
-            {
-                return PartialView("Partial", model);
-            }
-            else
-            {
-                return View(model);
-            }
+            return PartialView("ExecResult", model);
+
         }
 
         

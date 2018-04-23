@@ -1,0 +1,20 @@
+﻿@model IEnumerable<double>
+@{ 
+    var data = new List<double>();
+    if (!Model.Any())
+    {
+        data.Add(0);
+    }
+    else
+    {
+        data.AddRange(Model);
+    }
+}
+
+
+@foreach (var item in data)
+{
+    @Html.EditorFor(c => item, "double", "");
+}
+
+

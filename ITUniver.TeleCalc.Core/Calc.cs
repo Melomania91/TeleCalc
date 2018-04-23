@@ -47,15 +47,21 @@ namespace ITUniver.TeleCalc.ConCalc
             return operations.Select(o => o.Name).ToArray();
         }
 
-        public double Exec(string operName, double x, double y)
+        public double Exec(string operName, IEnumerable<double> args)
         {
             var operation = operations.FirstOrDefault(c => c.Name == operName);
 
             if (operation == null)
                 return double.NaN;
 
-            operation.Args = new double[] { x, y };
+            operation.Args = args.ToArray();
             return (double)operation.Result;
+        }
+        
+        [Obsolete("Изменён на Exec(string operName, IEnumerable<double> args)")]
+        public double Exec(string operName, double x, double y)
+        {
+            return Exec(operName, new double[] { x, y });
         }
 
         #region Old
