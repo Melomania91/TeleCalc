@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<double>
-@{ 
+@{
     var data = new List<double>();
     if (!Model.Any())
     {
@@ -14,7 +14,9 @@
 
 @foreach (var item in data)
 {
-    @Html.EditorFor(c => item, "double", "");
-}
+    <div style="width:90px;display:inline-block;">
+        @Html.EditorFor(c => item, "double", "")
+    </div>
+        }
 
 

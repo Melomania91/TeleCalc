@@ -1,6 +1,7 @@
 ﻿using ITUniver.TeleCalc.Core.Operations;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -17,10 +18,19 @@ namespace ITUniver.TeleCalc.ConCalc
         {
             var opers = new List<IOperation>();
             //get current assembly
-            var assembly = Assembly.GetExecutingAssembly();
+            var assemblyList = new List<Assembly>();
+            assemblyList.Add(Assembly.GetExecutingAssembly());
+             var path = Path.GetDirectoryName(@"C:\Assemblies\");
+            string[] files = Directory.GetFiles(path);
+            files.ToList().ForEach(f =>
+                {
+                    assemblyList.Add(Assembly.LoadFile(f));
+                });
 
             // get all types in it
-            var classes = assembly.GetTypes();
+            List<Type> classes = new List<Type>();
+            foreach (var item in assemblyList)
+                classes.AddRange(item.GetTypes());
 
             classes.ToList().ForEach(c =>
             {

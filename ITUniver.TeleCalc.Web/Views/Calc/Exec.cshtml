@@ -18,17 +18,19 @@
         <div class="form-group">
             @Html.LabelFor(model => model.OperName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.OperName, Model.OperationList, htmlAttributes: new { @class = "form-control", onChange = "calculate()" })
+                @Html.DropDownListFor(model => model.OperName, Model.OperationList, htmlAttributes: new { @class = "form-control", onChange = "setTimeout('calculate()', 500)" })
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.InputData, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.InputData, 
-               "Collection",
-               new { htmlAttributes = new { @class = "form-control", oninput = "calculate()" }})
-                @Html.ValidationMessageFor(model => model.InputData, "", new { @class = "text-danger" })
+            <div class="col-md-10" style="overflow:hidden;">
+                <div style="white-space:nowrap">
+                    @Html.EditorFor(model => model.InputData,
+                    "Collection",
+                    new { htmlAttributes = new { @class = "form-control", oninput = "setTimeout('calculate()', 500)" } })
+                    @Html.ValidationMessageFor(model => model.InputData, "", new { @class = "text-danger" })
+                </div>                              
             </div>
         </div>
         <div class="form-group">
@@ -44,9 +46,9 @@
     function calculate() {
         var xElement = $("input[name=InputData]").last();
         if (xElement.val().endsWith(" ")) {
-            var newInput = $("<input class=\"form-control text-box single-line\" name = \"InputData\" oninput=\"calculate()\" type=\"text\" value=\"\">");
-            newInput.insertAfter(xElement);
-            newInput.focus();
+            var newInput = $("<div style=\"width: 90px; display:inline-block;\"><input class=\"form-control text-box single-line\" name = \"InputData\" float:left oninput=\"setTimeout('calculate()', 500)\" type=\"text\" value=\"\"></div>");
+            newInput.insertAfter(xElement.parent());
+            newInput.child().focus();
         }
 
         $.ajax({
