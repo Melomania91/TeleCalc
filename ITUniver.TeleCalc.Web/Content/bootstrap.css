@@ -842,6 +842,7 @@ pre code {
 .col-md-8,
 .col-md-9,
 .col-md-10,
+.inline,
 .col-md-11,
 .col-md-12,
 .col-lg-1,
@@ -856,10 +857,10 @@ pre code {
 .col-lg-10,
 .col-lg-11,
 .col-lg-12 {
-  position: relative;
-  min-height: 1px;
-  padding-right: 15px;
-  padding-left: 15px;
+    position: relative;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
 }
 
 .col-xs-1,
@@ -1082,19 +1083,20 @@ pre code {
   .container {
     max-width: 970px;
   }
-  .col-md-1,
-  .col-md-2,
-  .col-md-3,
-  .col-md-4,
-  .col-md-5,
-  .col-md-6,
-  .col-md-7,
-  .col-md-8,
-  .col-md-9,
-  .col-md-10,
-  .col-md-11 {
-    float: left;
-  }
+    .col-md-1,
+    .col-md-2,
+    .col-md-3,
+    .col-md-4,
+    .col-md-5,
+    .col-md-6,
+    .col-md-7,
+    .col-md-8,
+    .col-md-9,
+    .col-md-10,
+    .inline,
+    .col-md-11 {
+        float: left;
+    }
   .col-md-1 {
     width: 8.333333333333332%;
   }
@@ -1122,9 +1124,14 @@ pre code {
   .col-md-9 {
     width: 75%;
   }
-  .col-md-10 {
+  .col-md-10,
+  .inline{
     width: 83.33333333333334%;
   }
+    .inline {
+        display: inline-block;
+    }
+
   .col-md-11 {
     width: 91.66666666666666%;
   }
@@ -6813,4 +6820,6 @@ td.visible-print {
   td.hidden-print {
     display: none !important;
   }
+ 
+
 }

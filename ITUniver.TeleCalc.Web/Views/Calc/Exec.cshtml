@@ -3,61 +3,103 @@
 
 @{
     ViewBag.Title = "Exec";
-        
+
 }
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
-        <h4>Вычислятор</h4>
+        <h4>Помогатор</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
         <div class="form-group">
             @Html.LabelFor(model => model.OperName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.OperName, Model.OperationList, htmlAttributes: new { @class = "form-control", onChange = "setTimeout('calculate()', 500)" })
+                @Html.DropDownListFor(model => model.OperName,
+                    Model.OperationList,
+                    htmlAttributes: new
+                    {
+                        @class = "form-control",
+                        oninput = "calculate(5);"
+                    }
+                    )
+                @Html.ValidationMessageFor(model => model.OperName, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.InputData, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10" style="overflow:hidden;">
-                <div style="white-space:nowrap">
-                    @Html.EditorFor(model => model.InputData,
-                    "Collection",
-                    new { htmlAttributes = new { @class = "form-control", oninput = "setTimeout('calculate()', 500)" } })
-                    @Html.ValidationMessageFor(model => model.InputData, "", new { @class = "text-danger" })
-                </div>                              
+            <div class="col-md-10">
+                @Html.EditorFor(
+                         model => model.InputData,
+                         "Collection",
+                         new
+                         {
+                             htmlAttributes = new
+                             {
+                                 @class = "form-control",
+                                 oninput = "calculate(5);return false;",
+                                 onkeyup = "check(event)"
+                             }
+                         })
+                @Html.ValidationMessageFor(model => model.InputData, "", new { @class = "text-danger" })
             </div>
         </div>
+
         <div class="form-group">
             @Html.LabelFor(model => model.Result, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10" id="result">
-                @Html.Partial("ExecResult")
             </div>
         </div>
+
     </div>
 }
 
-<script>
-    function calculate() {
-        var xElement = $("input[name=InputData]").last();
-        if (xElement.val().endsWith(" ")) {
-            var newInput = $("<div style=\"width: 90px; display:inline-block;\"><input class=\"form-control text-box single-line\" name = \"InputData\" float:left oninput=\"setTimeout('calculate()', 500)\" type=\"text\" value=\"\"></div>");
-            newInput.insertAfter(xElement.parent());
-            newInput.child().focus();
-        }
 
+<script>
+    itUniver = { timerId: 0 }
+
+    function check(event) {
+        if (event.keyCode == 8) {
+            if ($(event.target).val().length == 0) {
+                if ($("input[name=InputData]").length > 1) {
+                    $(event.target).prev().focus();
+                    $(event.target).remove();
+                }
+            }
+        }
+    }
+
+    function calculate(timeout) {
+
+        clearTimeout(itUniver.timerId);
+        itUniver.timerId = setTimeout(realCalc, timeout * 100);
+
+        var xElement = $("input[name=InputData]").last();
+
+        if (xElement.val().endsWith(" ")) {
+            xElement.val($.trim(xElement.val()));
+            var newInput = $("<input class=\"form-control text-box single-line\" name=\"InputData\" onkeyup=\"check(event)\" oninput=\"calculate(5);return false;\" type=\"text\" value=\"\">");
+            newInput.insertAfter(xElement);
+            newInput.focus();
+        }
+    }
+
+    function realCalc() {
         $.ajax({
             method: "POST",
             url: "/Calc/Exec",
             data: $('form').serializeArray()
-        }).success(function (result) {
-            $("#result").html(result) 
-        })
+        }).success(
+            function (result) {
+                $("#result").html(result);
+            }
+            )
+
     }
 </script>
 
