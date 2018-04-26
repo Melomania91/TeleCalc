@@ -22,6 +22,7 @@ namespace ITUniver.TeleCalc.ConCalc
             assemblyList.Add(Assembly.GetExecutingAssembly());
              var path = Path.GetDirectoryName(@"C:\Assemblies\");
             string[] files = Directory.GetFiles(path);
+
             files.ToList().ForEach(f =>
                 {
                     assemblyList.Add(Assembly.LoadFile(f));
@@ -40,7 +41,9 @@ namespace ITUniver.TeleCalc.ConCalc
                 {
                     var obj = System.Activator.CreateInstance(c) as IOperation;
                     if (obj != null)
+                    {
                         opers.Add(obj);
+                    }
                 }
             });          
 
