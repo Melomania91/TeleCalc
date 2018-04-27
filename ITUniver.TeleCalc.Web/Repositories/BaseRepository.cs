@@ -42,12 +42,16 @@ namespace ITUniver.TeleCalc.Web.Repositories
             {
                 try
                 {
-                    property.SetValue(obj, reader[property.Name]);
+                    var ind = reader.GetOrdinal(property.Name);
+                    if (!reader.IsDBNull(ind))
+                    {
+                        property.SetValue(obj, reader[property.Name]);
+                    }
                 }
                 catch
                 {
-                    var propVal = reader[property.Name];
                     
+
                 }
             }
 
@@ -67,7 +71,7 @@ namespace ITUniver.TeleCalc.Web.Repositories
                     {
                         var firstPart = queryString.Substring(0, (queryString.Length - queryString.ToUpper().IndexOf("ORDER") - 1));
                         var secondPart = queryString.Substring(queryString.ToUpper().IndexOf("ORDER"));
-                        queryString = firstPart + condition + secondPart;
+                        queryString = firstPart + $" AND {condition} " + secondPart;
                     }
                     else
                         queryString += $" AND {condition} ";
@@ -96,6 +100,64 @@ namespace ITUniver.TeleCalc.Web.Repositories
 
             throw new NotImplementedException();
         }
+
+        /// <summary>
+        /// Получение выборки из БД
+        /// </summary>
+        /// <param name="condition">Условие выборки</param>
+        /// <param name="query">true - если передаётся полный запрос, false - если необходимо использовать запрос, определённый для типа</param>
+        /// <returns></returns>
+        public IEnumerable<T> Find(string condition, bool fullQuery)
+        {
+            var items = new List<T>();
+            string queryString = GetSelectQuery();
+
+            if (fullQuery)
+            {
+                queryString = condition;
+            }
+
+            else
+            {
+                if (!string.IsNullOrWhiteSpace(condition))
+                {
+                    if (queryString.ToUpper().Contains("WHERE"))
+                    {
+                        if (queryString.ToUpper().Contains("ORDER"))
+                        {
+                            var firstPart = queryString.Substring(0, (queryString.Length - queryString.ToUpper().IndexOf("ORDER") - 1));
+                            var secondPart = queryString.Substring(queryString.ToUpper().IndexOf("ORDER"));
+                            queryString = firstPart + $" AND {condition} " + secondPart;
+                        }
+                        else
+                            queryString += $" AND {condition} ";
+                    }
+                    else
+                        queryString += $" WHERE {condition} ";
+                }
+            }
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                // Call Read before accessing data.
+                while (reader.Read())
+                {
+                    items.Add(Map(reader));
+                }
+
+                // Call Close when done reading.
+                reader.Close();
+                return items;
+            }
+
+            throw new NotImplementedException();
+        }
+
 
         public T Read(Guid id)
         {
@@ -136,7 +198,6 @@ namespace ITUniver.TeleCalc.Web.Repositories
                     return command.ExecuteNonQuery() > 0;
                 }
 
-                return true;
             }
             return false;
         }

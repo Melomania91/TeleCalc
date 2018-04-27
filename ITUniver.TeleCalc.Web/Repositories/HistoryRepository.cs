@@ -25,7 +25,10 @@ namespace ITUniver.TeleCalc.Web.Repositories
                     WHERE his.Initiator = us.Id AND his.Operation = op.Id;";
         }
 
-        
-      
+        internal override string GetInsertQuery()
+        {
+            return @"INSERT INTO dbo.History (Initiator, Operation, Args, Result, CalcDate, Time) VALUES (@initiator, @operation, @args, @result, @calcDate, @time)";
+        }
+
     }
 }

@@ -6,7 +6,44 @@
 
 <h2>OperationHistory</h2>
 
-@foreach (var item in Model)
-{
-    @Html.Partial("HistoryItem", item)
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Initiator)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Args)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Result)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CalcDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Time)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Initiator)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Args)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Result)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CalcDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Time)
+        </td>
+    </tr>
 }
+
+</table>

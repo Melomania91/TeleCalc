@@ -14,7 +14,7 @@ namespace ITUniver.TeleCalc.Web.Models
 
         public string Initiator { get; set; }
 
-        public OperationModel Operation { get; set; }
+        public int Operation { get; set; }
 
         public string Args { get; set; }
 

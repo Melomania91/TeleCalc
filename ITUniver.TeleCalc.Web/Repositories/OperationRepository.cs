@@ -13,7 +13,7 @@ namespace ITUniver.TeleCalc.Web.Repositories
         string connectionString = "";
 
         public OperationRepository(string connectionString) : base(connectionString)
-        {          
+        {
         }
 
         internal override string GetSelectQuery()
@@ -31,6 +31,17 @@ namespace ITUniver.TeleCalc.Web.Repositories
             var opers = Find($"[Name] = N'{name}'");
 
             return opers.FirstOrDefault();
+        }
+
+        public IEnumerable<OperationModel> GetTop(int userId)
+        {
+            var query = $@"SELECT TOP 3 op.Name
+                        FROM [Operation] op
+                        LEFT JOIN [History] his
+                        ON op.Id = his.Operation
+                        WHERE his.Initiator = {userId}
+                        GROUP BY his.Operation, op.Name";
+            return Find(query, true).Take(3);
         }
     }
 }
